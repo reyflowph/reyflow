@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ReyFlow | GHL Virtual Assistant</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0a0f1e;
+  --navy2:#0f1a2e;
+  --navy3:#162035;
+  --teal:#00d4aa;
+  --teal-dark:#00a882;
+  --teal-glow:rgba(0,212,170,0.15);
+  --teal-border:rgba(0,212,170,0.25);
+  --white:#ffffff;
+  --muted:#8892a4;
+  --border:#1e2d45;
+}
+html,body{width:100%;min-height:100vh;overflow-x:hidden}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--white);background:var(--navy);line-height:1.6}
+a{text-decoration:none;color:inherit}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;width:100%;background:rgba(10,15,30,0.97);border-bottom:1px solid var(--teal-border);z-index:100;backdrop-filter:blur(10px)}
+.nav-inner{width:100%;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 3rem}
+.logo{font-weight:800;font-size:1.3rem;color:var(--white)}.logo span{color:var(--teal)}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{font-size:.9rem;color:var(--muted);transition:color .2s}.nav-links a:hover{color:var(--teal)}
+.nav-cta{background:var(--teal);color:var(--navy);padding:.5rem 1.3rem;border-radius:6px;font-size:.9rem;font-weight:700;transition:background .2s}.nav-cta:hover{background:var(--teal-dark)}
+
+/* HERO */
+#hero{background:var(--navy);padding:10rem 3rem 7rem;text-align:center;width:100%;position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(0,212,170,0.08) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-block;background:var(--teal-glow);border:1px solid var(--teal-border);border-radius:20px;padding:.35rem 1.1rem;font-size:.82rem;letter-spacing:.05em;margin-bottom:2rem;color:var(--teal)}
+#hero h1{font-size:clamp(2.8rem,7vw,5.5rem);font-weight:800;line-height:1.1;margin-bottom:1.5rem;color:var(--white);letter-spacing:-2px}
+#hero h1 span{color:var(--teal)}
+#hero p{font-size:clamp(1rem,1.5vw,1.2rem);color:var(--muted);max-width:600px;margin:0 auto 2.5rem}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:var(--teal);color:var(--navy);padding:.8rem 2rem;border-radius:8px;font-weight:700;font-size:1rem;transition:all .2s}.btn-primary:hover{background:var(--teal-dark);transform:translateY(-2px)}
+.btn-outline{border:1.5px solid var(--teal-border);color:var(--white);padding:.8rem 2rem;border-radius:8px;font-weight:600;font-size:1rem;transition:all .2s;background:transparent}.btn-outline:hover{border-color:var(--teal);color:var(--teal);transform:translateY(-2px)}
+.hero-stats{display:flex;justify-content:center;gap:5rem;margin-top:5rem;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:3rem}
+.stat .num{font-size:2.5rem;font-weight:800;color:var(--teal)}.stat .label{font-size:.85rem;color:var(--muted);margin-top:.3rem}
+
+/* SECTIONS */
+section{width:100%;padding:6rem 3rem}
+.sec-tag{font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:.6rem}
+.sec-title{font-size:clamp(2rem,4vw,2.8rem);font-weight:800;color:var(--white);margin-bottom:1rem;letter-spacing:-1px}
+.sec-sub{font-size:1rem;color:var(--muted);max-width:560px}
+.sec-header{margin-bottom:3rem}
+
+/* ABOUT */
+#about{background:var(--navy2)}
+.about-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:6rem;align-items:center;max-width:1400px;margin:auto}
+.about-img-wrap{position:relative;display:flex;justify-content:center;align-items:center}
+.about-img-wrap::before{content:'';position:absolute;width:304px;height:304px;border-radius:50%;background:linear-gradient(135deg,var(--teal),transparent);z-index:0}
+.about-img{width:280px;height:280px;border-radius:50%;object-fit:cover;object-position:top center;position:relative;z-index:1;border:4px solid var(--navy2);display:block}
+.about-glow{position:absolute;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,170,0.12),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);z-index:0}
+.about-text p{color:var(--muted);margin-bottom:1rem;font-size:.97rem}
+.about-chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.2rem}
+.chip{background:var(--teal-glow);color:var(--teal);border:1px solid var(--teal-border);border-radius:20px;padding:.35rem 1rem;font-size:.83rem;font-weight:500}
+
+/* SERVICES */
+#services{background:var(--navy)}
+.cards-wrap{max-width:1400px;margin:auto}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+.card{background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:2rem;transition:all .2s}.card:hover{transform:translateY(-5px);border-color:var(--teal-border);box-shadow:0 10px 30px rgba(0,212,170,0.08)}
+.card-icon{width:50px;height:50px;border-radius:12px;background:var(--teal-glow);display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem;font-size:1.5rem;border:1px solid var(--teal-border)}
+.card h3{font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:.6rem}
+.card p{font-size:.88rem;color:var(--muted)}
+
+/* WORK */
+#work{background:var(--navy2)}
+.work-wrap{max-width:1400px;margin:auto}
+.work-tabs{display:flex;gap:.5rem;margin-bottom:2.5rem;flex-wrap:wrap}
+.tab{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.5rem 1.2rem;border-radius:20px;font-size:.88rem;cursor:pointer;transition:all .2s}.tab.active,.tab:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-glow)}
+.work-section{display:none}.work-section.active{display:block}
+.work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.work-card{border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--navy3);transition:all .2s}.work-card:hover{transform:translateY(-4px);border-color:var(--teal-border);box-shadow:0 10px 30px rgba(0,212,170,0.08)}
+.work-thumb{height:180px;background:linear-gradient(135deg,#0a1628,#0f2040);display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative}
+.work-tag{position:absolute;top:12px;left:12px;background:var(--teal);color:var(--navy);font-size:.72rem;padding:.25rem .8rem;border-radius:20px;font-weight:700}
+.work-info{padding:1.2rem 1.4rem}
+.work-info h3{font-size:1rem;font-weight:700;color:var(--white);margin-bottom:.4rem}
+.work-info p{font-size:.87rem;color:var(--muted)}
+.workflow-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+.wf-card{background:var(--navy3);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.3rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;transition:all .2s}.wf-card:hover{border-color:var(--teal-border)}
+.wf-info h4{font-size:.92rem;font-weight:600;color:var(--white);margin-bottom:.2rem}
+.wf-info span{font-size:.78rem;color:var(--muted)}
+.wf-btn{flex-shrink:0;background:var(--teal-glow);border:1px solid var(--teal-border);color:var(--teal);padding:.35rem .9rem;border-radius:6px;font-size:.78rem;white-space:nowrap;transition:background .2s}.wf-btn:hover{background:rgba(0,212,170,0.25)}
+.section-label{color:var(--teal);font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin:1.5rem 0 .8rem}
+
+/* PRICING */
+#pricing{background:var(--navy)}
+.pricing-wrap{max-width:1400px;margin:auto}
+
+/* TOOLS */
+#tools{background:var(--navy2)}
+.tools-wrap{max-width:1400px;margin:auto}
+.tools-grid{display:flex;flex-wrap:wrap;gap:1rem}
+.tool-badge{display:flex;align-items:center;gap:.6rem;background:var(--navy3);border:1px solid var(--border);border-radius:10px;padding:.7rem 1.4rem;font-size:.9rem;font-weight:500;color:var(--white);transition:all .2s}.tool-badge:hover{border-color:var(--teal-border);color:var(--teal)}
+.tool-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);flex-shrink:0}
+
+/* WHY */
+#why{background:var(--navy)}
+.why-wrap{max-width:1400px;margin:auto}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+.why-card{background:var(--navy2);border-radius:16px;padding:1.8rem;border-top:3px solid var(--teal);transition:transform .2s}.why-card:hover{transform:translateY(-4px)}
+.why-card h3{font-size:1rem;font-weight:700;color:var(--white);margin-bottom:.5rem}
+.why-card p{font-size:.88rem;color:var(--muted)}
+
+/* TESTIMONIALS */
+#testimonials{background:var(--navy2)}
+.testi-wrap{max-width:1400px;margin:auto}
+
+/* CONTACT */
+#contact{background:var(--navy);border-top:1px solid var(--teal-border);text-align:center;position:relative;overflow:hidden}
+#contact::before{content:'';position:absolute;bottom:-200px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(0,212,170,0.06) 0%,transparent 70%);pointer-events:none}
+.contact-inner{max-width:700px;margin:auto;position:relative;z-index:1}
+.contact-links{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-top:2rem}
+.contact-link{display:flex;align-items:center;gap:.6rem;background:var(--teal-glow);border:1px solid var(--teal-border);border-radius:8px;padding:.7rem 1.5rem;color:var(--teal);font-size:.92rem;font-weight:500;transition:all .2s}.contact-link:hover{background:rgba(0,212,170,0.2);transform:translateY(-2px)}
+
+footer{text-align:center;padding:2rem 3rem;font-size:.85rem;color:var(--muted);border-top:1px solid var(--border)}
+
+@media(max-width:900px){
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .why-grid{grid-template-columns:repeat(2,1fr)}
+  .work-grid{grid-template-columns:repeat(2,1fr)}
+  .about-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+  section{padding:4rem 1.5rem}
+  .nav-inner{padding:0 1.5rem}
+}
+@media(max-width:600px){
+  .cards{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr}
+  .work-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">Rey<span>Flow</span></div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#work">Work</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#tools">Tools</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="nav-cta">Hire Me</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-badge">✦ GoHighLevel Virtual Assistant</div>
+  <h1>Hi, I'm <span>Reymundo Pilar</span><br>Your GHL Growth Partner</h1>
+  <p>I help businesses automate, systemize, and scale using GoHighLevel — from CRM setup and workflows to funnels and calendars.</p>
+  <div class="hero-btns">
+    <a href="#contact" class="btn-primary">Let's Work Together</a>
+    <a href="#work" class="btn-outline">View My Work</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="num">19+</div><div class="label">Workflows Built</div></div>
+    <div class="stat"><div class="num">20+</div><div class="label">Funnel Pages Built</div></div>
+    <div class="stat"><div class="num">3</div><div class="label">Full GHL Systems</div></div>
+    <div class="stat"><div class="num">100%</div><div class="label">GHL Focused</div></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-img-wrap">
+      <div class="about-glow"></div>
+      <div style="width:280px;height:280px;border-radius:50%;overflow:hidden;border:4px solid var(--teal);position:relative;z-index:1;flex-shrink:0">
+        <img src="https://drive.google.com/thumbnail?id=1CqjKSxZBtKU38eKWUbzl-y-Y3N5byyGC&sz=w400" alt="Reymundo Pilar" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block"/>
+      </div>
+    </div>
+    <div>
+      <div class="sec-tag">About Me</div>
+      <h2 class="sec-title">Your GoHighLevel Virtual Assistant</h2>
+      <p>Hi! I'm Reymundo Pilar, a GoHighLevel Virtual Assistant from Aklan, Philippines. I'm passionate about helping business owners stop drowning in manual tasks and start scaling with smart systems.</p>
+      <p>I specialize in building powerful GHL environments — clean CRM pipelines, automated workflows, high-converting funnels, and seamless calendar setups tailored to your business needs.</p>
+      <p>Detail-oriented, reliable, and deeply committed to delivering results that actually move the needle for your business.</p>
+      <div class="about-chips">
+        <span class="chip">GoHighLevel</span>
+        <span class="chip">CRM Setup</span>
+        <span class="chip">Workflow Automation</span>
+        <span class="chip">Funnel Building</span>
+        <span class="chip">Calendar Management</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="cards-wrap">
+    <div class="sec-header">
+      <div class="sec-tag">What I Do</div>
+      <h2 class="sec-title">Services I Offer</h2>
+      <p class="sec-sub">End-to-end GHL support to help your business run smoother, faster, and smarter.</p>
+    </div>
+    <div class="cards">
+      <div class="card"><div class="card-icon">📅</div><h3>Calendar Setup</h3><p>Configure booking pages, availability, reminders, and confirmations so your schedule runs itself.</p></div>
+      <div class="card"><div class="card-icon">🗂️</div><h3>CRM Management</h3><p>Pipeline creation, contact organization, and stage management to keep your leads perfectly tracked.</p></div>
+      <div class="card"><div class="card-icon">⚙️</div><h3>Workflow Automation</h3><p>Build GHL workflows that automate follow-ups, nurturing, onboarding, and internal processes.</p></div>
+      <div class="card"><div class="card-icon">🚀</div><h3>Funnel Building</h3><p>Design high-converting sales funnels — landing pages, opt-ins, checkout pages, and upsell flows.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <div class="work-wrap">
+    <div class="sec-header">
+      <div class="sec-tag">Portfolio</div>
+      <h2 class="sec-title">Work Samples</h2>
+      <p class="sec-sub">Real GHL projects built for real clients — funnels, automations, CRM pipelines, and more.</p>
+    </div>
+    <div class="work-tabs">
+      <div class="tab active" onclick="showTab('funnels',this)">🚀 Funnels</div>
+      <div class="tab" onclick="showTab('workflows',this)">⚙️ Workflow Automation</div>
+      <div class="tab" onclick="showTab('crm',this)">🗂️ CRM / Pipeline</div>
+      <div class="tab" onclick="showTab('email',this)">📧 Email Templates</div>
+    </div>
+
+    <div class="work-section active" id="funnels">
+
+      <!-- CARECONNECT FREE -->
+      <div class="section-label">CareConnect — Free Consultation Funnel</div>
+      <div class="workflow-grid" style="margin-bottom:2rem">
+        <div class="wf-card"><div class="wf-info"><h4>Lead Capture Page</h4><span>CareConnect</span></div><a href="https://www.loom.com/share/2a5a9e31d128403981065ca1db9ef99b" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Thank You Page</h4><span>CareConnect</span></div><a href="https://www.loom.com/share/4004d98bcb2b4f4fbc0dd072dc14936c" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+      </div>
+
+      <!-- CARECONNECT PAID -->
+      <div class="section-label">CareConnect — Paid Consultation Funnel</div>
+      <div class="workflow-grid" style="margin-bottom:2rem">
+        <div class="wf-card"><div class="wf-info"><h4>Sales Page</h4><span>CareConnect</span></div><a href="https://www.loom.com/share/26405b384c2940c490fd2f5fdf22fda7" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Payment Page</h4><span>CareConnect</span></div><a href="https://www.loom.com/share/d4571a626e6a4acd821bdac2a5976fe0" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Onboarding Form</h4><span>CareConnect</span></div><a href="https://www.loom.com/share/fa902adfb8f944cd97a004f8bae3b273" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Thank You + Booking Page</h4><span>CareConnect</span></div><a href="https://www.loom.com/share/d09d9795fe9f4c0da034baa6d73fb79a" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+      </div>
+
+      <!-- SCALEFLOW -->
+      <div class="section-label">ScaleFlow Marketing — Full Funnel Ecosystem</div>
+      <div class="workflow-grid" style="margin-bottom:2rem">
+        <div class="wf-card"><div class="wf-info"><h4>Lead Capture Page</h4><span>ScaleFlow</span></div><a href="https://www.loom.com/share/0655e0254ead41dbbdf9661febed0492" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Thank You + Booking Page</h4><span>ScaleFlow</span></div><a href="https://www.loom.com/share/c3d98d385ff140c5bab52d136df7a6a6" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Sales Page</h4><span>ScaleFlow</span></div><a href="https://www.loom.com/share/624db51c9983489e9df0ea94e1b15fcb" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Payment Page</h4><span>ScaleFlow</span></div><a href="https://www.loom.com/share/3c8611b9f2c74a70adc44f531f9d4607" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Onboarding Form</h4><span>ScaleFlow</span></div><a href="https://www.loom.com/share/59766db5fdb44d838475368c3d234a36" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Onboarding Calendar Page</h4><span>ScaleFlow</span></div><a href="https://www.loom.com/share/1340482e029d40f0a7397200edd7acb7" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Thank You Page</h4><span>ScaleFlow</span></div><a href="https://www.loom.com/share/0d14e825597540b8ba800b1ecc8637b8" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+      </div>
+
+      <!-- VITALCORE -->
+      <div class="section-label">Vitalcore — Quiz Funnel</div>
+      <div class="workflow-grid">
+        <div class="wf-card"><div class="wf-info"><h4>Quiz Page</h4><span>Vitalcore</span></div><a href="https://www.loom.com/share/a41950da6f974dff83b0f3304334cf5b" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Result — Low Risk Page</h4><span>Vitalcore</span></div><a href="https://www.loom.com/share/8d99c3a783ff4887998dd92bb7a40863" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Result — Moderate Risk Page</h4><span>Vitalcore</span></div><a href="https://www.loom.com/share/494ba7d333e94ea7b26262f8d3ed9c10" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Result — High Risk Page</h4><span>Vitalcore</span></div><a href="https://www.loom.com/share/0bfa82cee9ff458e9914c5298b3d3dc5" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Sales Page</h4><span>Vitalcore</span></div><a href="https://www.loom.com/share/4dae191ec6c9467395c6053809d12243" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Payment Page</h4><span>Vitalcore</span></div><a href="https://www.loom.com/share/662ddc3bc66b4a139b87cf2c3e78b6f7" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Thank You + Booking Page</h4><span>Vitalcore</span></div><a href="https://www.loom.com/share/0fa8a9feafcf4cee8b4eb90cdde0709a" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+      </div>
+
+    </div>
+
+    <div class="work-section" id="workflows">
+      <p style="color:var(--muted);font-size:.9rem;margin-bottom:1.5rem">Click <strong style="color:var(--teal)">▶ Watch Demo</strong> to see each workflow in action.</p>
+      <div class="section-label">Vitalcore — 4 Workflows</div>
+      <div class="workflow-grid" style="margin-bottom:2rem">
+        <div class="wf-card"><div class="wf-info"><h4>Quiz Submission</h4><span>Vitalcore</span></div><a href="https://www.loom.com/share/617bdc8ddc1a45f4a41f1b2dcdb6338b" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Post-Payment</h4><span>Vitalcore</span></div><a href="https://www.loom.com/share/94377da4bfd64851865e0128d723e682" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Appointment + Reminders</h4><span>Vitalcore</span></div><a href="https://www.loom.com/share/130175053b9f49dca0f76ce4c887bd02" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>No-Show</h4><span>Vitalcore</span></div><a href="https://www.loom.com/share/49705ae5f8d74ee18a01f67d5b58f08d" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+      </div>
+      <div class="section-label">CareConnect — 7 Workflows</div>
+      <div class="workflow-grid" style="margin-bottom:2rem">
+        <div class="wf-card"><div class="wf-info"><h4>New Lead Nurture</h4><span>CareConnect</span></div><a href="https://www.loom.com/share/1da73c9b92544b0bb1e9af5c33f80b0b" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Booking & Reminders</h4><span>CareConnect</span></div><a href="https://www.loom.com/share/d0c15d98ecde4b619969709b4a715188" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>No-Show Recovery</h4><span>CareConnect</span></div><a href="https://www.loom.com/share/ef50cb7455fe4f7aae1dc15fe711528d" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Post-Consultation + Upsell</h4><span>CareConnect</span></div><a href="https://www.loom.com/share/fa6f6b070ab54953a7c2812f827827c8" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Paid Follow-up</h4><span>CareConnect</span></div><a href="https://www.loom.com/share/98bf57acb314467fb60c7690cab4fbb8" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Payment Success</h4><span>CareConnect</span></div><a href="https://www.loom.com/share/123ce680ccc14cbea6fc58354ad1bf65" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Paid Booking & Reminders</h4><span>CareConnect</span></div><a href="https://www.loom.com/share/a01181c88a714b26898896d8659093c3" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+      </div>
+      <div class="section-label">ScaleFlow — 8 Workflows</div>
+      <div class="workflow-grid">
+        <div class="wf-card"><div class="wf-info"><h4>Lead Nurture Follow-Up</h4><span>ScaleFlow</span></div><a href="https://www.loom.com/share/b2cd06f112f44fc09358b30a01487ea7" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Booked Call Confirmation + Reminder</h4><span>ScaleFlow</span></div><a href="https://www.loom.com/share/7ce80543302341d0b5b88b778b429b07" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Cancelled Appointment Follow-Up</h4><span>ScaleFlow</span></div><a href="https://www.loom.com/share/cdd378ed034f4dca997bb908565e317e" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>No-Show Nurture Follow-Up</h4><span>ScaleFlow</span></div><a href="https://www.loom.com/share/5a02a5f0d9fc4f0a8278dd602a441fed" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Showed-Up + Upsell</h4><span>ScaleFlow</span></div><a href="https://www.loom.com/share/512668c5001e4e12ad8f618cae0dffa7" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Paid</h4><span>ScaleFlow</span></div><a href="https://www.loom.com/share/a2fc0f4b4de34591b41ad4421562dce7" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Onboarding Form Submitted</h4><span>ScaleFlow</span></div><a href="https://www.loom.com/share/175e93772ce546e1bfe3039c65d3f316" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>Onboarding Booked Confirmation + Reminders</h4><span>ScaleFlow</span></div><a href="https://www.loom.com/share/57d0d9047a3b4a628f27b090f8567816" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+      </div>
+    </div>
+
+    <div class="work-section" id="crm">
+      <div class="workflow-grid">
+        <div class="wf-card"><div class="wf-info"><h4>CareConnect Pipeline</h4><span>CRM Setup</span></div><a href="https://www.loom.com/share/d441bb8e1f91434fbb992cf2ea8a2034" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>ScaleFlow Pipeline</h4><span>CRM Setup</span></div><a href="https://www.loom.com/share/4e8090a2afd14db79efb3e06afa60b3c" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>ScaleFlow Onboarding Client Pipeline</h4><span>CRM Setup</span></div><a href="https://www.loom.com/share/5f769bfc26e9419ca5113c5da3b7549a" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+      </div>
+    </div>
+
+    <div class="work-section" id="email">
+      <div class="workflow-grid">
+        <div class="wf-card"><div class="wf-info"><h4>CareConnect Email Templates</h4><span>Email Setup</span></div><a href="https://www.loom.com/share/30ffb418a0944efcb90b161515d4cb0c" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+        <div class="wf-card"><div class="wf-info"><h4>ScaleFlow Email Templates</h4><span>Email Setup</span></div><a href="https://www.loom.com/share/958f677156f3450e878f3c05a820c831" target="_blank" class="wf-btn">▶ Watch Demo</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="pricing-wrap">
+    <div class="sec-header">
+      <div class="sec-tag">Pricing</div>
+      <h2 class="sec-title">Simple, Transparent Pricing</h2>
+      <p class="sec-sub">No hidden fees. Pick the package that fits your needs or hire me by the hour.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:1.5rem;align-items:stretch">
+      <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:2rem;display:flex;flex-direction:column;transition:all .2s" onmouseover="this.style.borderColor='var(--teal-border)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='var(--border)';this.style.transform='translateY(0)'">
+        <div style="font-size:1.8rem;margin-bottom:.8rem">⚡</div>
+        <h3 style="font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:.3rem">Launch</h3>
+        <p style="color:var(--muted);font-size:.85rem;margin-bottom:1.2rem">Get your GHL foundation set up and ready to go</p>
+        <div style="font-size:2.5rem;font-weight:800;color:var(--teal);margin-bottom:1.5rem">$150</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.7rem;margin-bottom:2rem;flex:1">
+          <li style="font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:.6rem"><span style="color:var(--teal)">✓</span>1 Funnel (up to 3 pages)</li>
+          <li style="font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:.6rem"><span style="color:var(--teal)">✓</span>Calendar Setup</li>
+          <li style="font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:.6rem"><span style="color:var(--teal)">✓</span>1 CRM Pipeline</li>
+          <li style="font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:.6rem"><span style="color:var(--teal)">✓</span>1 Workflow Automation</li>
+        </ul>
+        <a href="#contact" style="display:block;text-align:center;border:1.5px solid var(--teal-border);color:var(--teal);padding:.7rem;border-radius:8px;font-weight:600;font-size:.9rem;margin-top:auto;transition:background .2s" onmouseover="this.style.background='var(--teal-glow)'" onmouseout="this.style.background='transparent'">Get Started →</a>
+      </div>
+      <div style="background:var(--navy2);border:2px solid var(--teal);border-radius:16px;padding:2rem;position:relative;display:flex;flex-direction:column;box-shadow:0 0 30px rgba(0,212,170,0.1)">
+        <div style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--teal);color:var(--navy);font-size:.75rem;font-weight:700;padding:.3rem 1rem;border-radius:20px;white-space:nowrap">⭐ MOST POPULAR</div>
+        <div style="font-size:1.8rem;margin-bottom:.8rem">🚀</div>
+        <h3 style="font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:.3rem">Scale</h3>
+        <p style="color:var(--muted);font-size:.85rem;margin-bottom:1.2rem">Build a complete system that runs while you sleep</p>
+        <div style="font-size:2.5rem;font-weight:800;color:var(--teal);margin-bottom:1.5rem">$300</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.7rem;margin-bottom:2rem;flex:1">
+          <li style="font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:.6rem"><span style="color:var(--teal)">✓</span>2 Funnels (up to 5 pages each)</li>
+          <li style="font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:.6rem"><span style="color:var(--teal)">✓</span>Full CRM Setup</li>
+          <li style="font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:.6rem"><span style="color:var(--teal)">✓</span>Up to 5 Workflows</li>
+          <li style="font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:.6rem"><span style="color:var(--teal)">✓</span>Email Templates</li>
+        </ul>
+        <a href="#contact" class="btn-primary" style="display:block;text-align:center;padding:.7rem;border-radius:8px;font-weight:700;font-size:.9rem;margin-top:auto">Get Started →</a>
+      </div>
+      <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:2rem;display:flex;flex-direction:column;transition:all .2s" onmouseover="this.style.borderColor='var(--teal-border)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='var(--border)';this.style.transform='translateY(0)'">
+        <div style="font-size:1.8rem;margin-bottom:.8rem">👑</div>
+        <h3 style="font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:.3rem">Dominate</h3>
+        <p style="color:var(--muted);font-size:.85rem;margin-bottom:1.2rem">Full GHL takeover — funnels, automations, CRM, and beyond</p>
+        <div style="font-size:2.5rem;font-weight:800;color:var(--teal);margin-bottom:1.5rem">$500</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.7rem;margin-bottom:2rem;flex:1">
+          <li style="font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:.6rem"><span style="color:var(--teal)">✓</span>3 Funnels (unlimited pages)</li>
+          <li style="font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:.6rem"><span style="color:var(--teal)">✓</span>Full CRM + Pipeline Setup</li>
+          <li style="font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:.6rem"><span style="color:var(--teal)">✓</span>Up to 10 Workflows</li>
+          <li style="font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:.6rem"><span style="color:var(--teal)">✓</span>Email Templates</li>
+          <li style="font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:.6rem"><span style="color:var(--teal)">✓</span>Ongoing Support (1 month)</li>
+        </ul>
+        <a href="#contact" style="display:block;text-align:center;border:1.5px solid var(--teal-border);color:var(--teal);padding:.7rem;border-radius:8px;font-weight:600;font-size:.9rem;margin-top:auto;transition:background .2s" onmouseover="this.style.background='var(--teal-glow)'" onmouseout="this.style.background='transparent'">Get Started →</a>
+      </div>
+    </div>
+    <div style="background:var(--navy2);border:1px solid var(--teal-border);border-radius:16px;padding:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem">
+      <div>
+        <div style="font-size:1.5rem;margin-bottom:.4rem">⏱️</div>
+        <h3 style="font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:.3rem">Hourly Rate</h3>
+        <p style="color:var(--muted);font-size:.9rem">Available for one-time tasks, consultations, or ongoing retainer work.</p>
+      </div>
+      <div style="font-size:2.2rem;font-weight:800;color:var(--teal)">Starting at $6<span style="font-size:1rem;color:var(--muted)">/hr</span></div>
+      <a href="#contact" class="btn-primary" style="padding:.7rem 2rem;border-radius:8px">Hire by the Hour →</a>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section id="tools">
+  <div class="tools-wrap">
+    <div class="sec-header">
+      <div class="sec-tag">My Toolkit</div>
+      <h2 class="sec-title">Tools I Work With</h2>
+      <p class="sec-sub">Platforms and tools I use to deliver great results for clients.</p>
+    </div>
+    <div class="tools-grid">
+      <div class="tool-badge"><div class="tool-dot"></div>GoHighLevel</div>
+      <div class="tool-badge"><div class="tool-dot"></div>Google Calendar</div>
+      <div class="tool-badge"><div class="tool-dot"></div>Google Workspace</div>
+      <div class="tool-badge"><div class="tool-dot"></div>Zapier</div>
+      <div class="tool-badge"><div class="tool-dot"></div>Stripe</div>
+      <div class="tool-badge"><div class="tool-dot"></div>Zoom</div>
+      <div class="tool-badge"><div class="tool-dot"></div>Loom</div>
+      <div class="tool-badge"><div class="tool-dot"></div>Slack</div>
+      <div class="tool-badge"><div class="tool-dot"></div>Canva</div>
+      <div class="tool-badge"><div class="tool-dot"></div>Notion</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section id="why">
+  <div class="why-wrap">
+    <div class="sec-header">
+      <div class="sec-tag">Why Choose Me</div>
+      <h2 class="sec-title">What Makes Me Different</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card"><h3>GHL-Focused</h3><p>I specialize specifically in GoHighLevel — deeper knowledge and faster results for all your GHL projects.</p></div>
+      <div class="why-card"><h3>Detail-Oriented</h3><p>Every workflow, funnel, and CRM I build is clean, organized, and fully documented.</p></div>
+      <div class="why-card"><h3>Reliable & Responsive</h3><p>Clear communication, consistent updates, and on-time delivery — every single time.</p></div>
+      <div class="why-card"><h3>Results-Driven</h3><p>I care about outcomes, not just tasks. My goal is to make a real impact on your business growth.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="testi-wrap">
+    <div class="sec-header">
+      <div class="sec-tag">Kind Words</div>
+      <h2 class="sec-title">Client Testimonials</h2>
+      <p class="sec-sub">What clients say after working with me.</p>
+    </div>
+    <div style="background:var(--navy3);border:2px dashed var(--teal-border);border-radius:16px;padding:3.5rem;text-align:center">
+      <div style="font-size:2.5rem;margin-bottom:1rem">⭐</div>
+      <h3 style="color:var(--teal);font-size:1.3rem;font-weight:700;margin-bottom:.8rem">Be My First Official Client</h3>
+      <p style="color:var(--muted);max-width:500px;margin:0 auto 1.5rem;font-size:.97rem">"I'm currently building my client roster and offering discounted rates in exchange for honest feedback and a testimonial. Limited spots available!"</p>
+      <a href="#contact" class="btn-primary" style="display:inline-block">Claim Your Spot →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="sec-tag">Get In Touch</div>
+    <h2 class="sec-title" style="margin-top:.5rem">Ready to Level Up Your Business?</h2>
+    <p style="color:var(--muted);margin-top:.8rem">Let's talk about how I can help you grow with GoHighLevel. Open to project-based work and ongoing VA contracts.</p>
+    <div class="contact-links">
+      <a href="mailto:reymundopilarjr@gmail.com" class="contact-link">📧 Email Me</a>
+      <a href="https://www.instagram.com/reyflow.co/" target="_blank" class="contact-link">📸 Instagram</a>
+      <a href="https://www.facebook.com/iamreypilar" target="_blank" class="contact-link">📘 Facebook</a>
+      <a href="https://www.linkedin.com/in/reymundo-pilar-jr-879144342/" target="_blank" class="contact-link">💼 LinkedIn</a>
+      <a href="https://www.upwork.com/freelancers/~01c0dd391c50c05b62" target="_blank" class="contact-link">💻 Upwork</a>
+    </div>
+  </div>
+</section>
+
+<footer>© 2025 Reymundo Pilar · ReyFlow · GoHighLevel VA · Aklan, Philippines</footer>
+
+<script>
+function showTab(id,el){
+  document.querySelectorAll('.work-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>
